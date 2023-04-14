@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.health.dao.HealthUserInfoDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.health.entity.HealthUserInfoEntity" id="healthUserInfoMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="heartRate" column="heart_rate"/>
+        <result property="bloodPressure" column="blood_pressure"/>
+        <result property="height" column="height"/>
+        <result property="weight" column="weight"/>
+        <result property="bmi" column="BMI"/>
+        <result property="eatHabits" column="eat_habits"/>
+        <result property="disease" column="disease"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="queryCurrentUserInfo" resultType="io.renren.modules.health.entity.HealthUserInfoEntity">
+        SELECT
+            a.*,
+            b.username
+        FROM
+            `health_user_info` a
+                LEFT JOIN sys_user b ON a.user_id = b.user_id
+        WHERE ${ew.sqlSegment}
+    </select>
+
+    <select id="queryalluserlist" resultType="io.renren.modules.health.entity.HealthUserInfoEntity">
+        SELECT
+            a.*,
+            b.username
+        FROM
+            `health_user_info` a
+                INNER JOIN (SELECT MAX(id) maxId FROM health_user_info GROUP BY user_id) b ON a.id = b.maxId
+                LEFT JOIN sys_user b ON a.user_id = b.user_id
+        WHERE ${ew.sqlSegment}
+    </select>
+
+    <select id="getHealthUserInfoByUserId" resultType="io.renren.modules.health.entity.HealthUserInfoEntity">
+        SELECT
+            a.*,
+            b.username
+        FROM
+            `health_user_info` a
+                LEFT JOIN sys_user b ON a.user_id = b.user_id
+        ORDER BY
+            create_time DESC
+            LIMIT 1
+    </select>
+
+
+</mapper>

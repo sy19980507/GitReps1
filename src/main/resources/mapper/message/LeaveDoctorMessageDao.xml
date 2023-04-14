@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.message.dao.LeaveDoctorMessageDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.message.entity.LeaveDoctorMessageEntity" id="leaveDoctorMessageMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="doctorId" column="doctor_id"/>
+        <result property="message" column="message"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="queryLeaveMessage" resultType="io.renren.modules.message.entity.LeaveDoctorMessageEntity">
+        SELECT
+            a.*,
+            b.username,
+            c.username doctorName
+        FROM
+            `leave_doctor_message` a
+                LEFT JOIN sys_user b ON b.user_id = a.user_id
+                LEFT JOIN sys_user c ON c.user_id = a.doctor_id
+        WHERE ${ew.sqlSegment}
+    </select>
+
+
+</mapper>

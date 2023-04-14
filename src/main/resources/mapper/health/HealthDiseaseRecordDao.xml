@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.health.dao.HealthDiseaseRecordDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.health.entity.HealthDiseaseRecordEntity" id="healthDiseaseRecordMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="diseaseType" column="disease_type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="recure" column="recure"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+    </resultMap>
+
+    <select id="queryAllDiseaseRecord" resultType="io.renren.modules.health.entity.HealthDiseaseRecordEntity">
+        SELECT
+            a.*,
+            b.username
+        FROM
+            `health_disease_record` a
+                LEFT JOIN sys_user b ON a.user_id = b.user_id
+        WHERE ${ew.sqlSegment}
+    </select>
+
+
+</mapper>
